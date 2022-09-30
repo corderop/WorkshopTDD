@@ -6,11 +6,11 @@ client = TestClient(app)
 
 # TEST RETURN CART BY ID
 def test_return_cart():
-    db[1] = {
-        "id": 1,
+    db["1"] = {
+        "id": "1",
         "lines": [
-            {"product": 50776, "quantity": 2},
-            {"product": 15778, "quantity": 4}
+            {"product": 50776},
+            {"product": 15778}
         ]
     }
 
@@ -18,15 +18,21 @@ def test_return_cart():
 
     assert response.status_code == 200
     assert response.json() == {
-        "id": 1,
+        "id": "1",
         "lines": [
-            {"product": 50776, "quantity": 2},
-            {"product": 15778, "quantity": 4}
+            {"product": 50776},
+            {"product": 15778}
         ]
     }
 
 # TEST ADD PRODUCT TO THE CART
 def test_add_product_to_cart():
+    db["1"] = {
+        "id": "1",
+        "lines": [
+            {"product": 15778}
+        ]
+    }
     body = {"product": 50776}
     
     response = client.post("/cart/1/product", json=body)
@@ -35,6 +41,7 @@ def test_add_product_to_cart():
     assert response.json() == {
         "id": "1",
         "lines": [
+            {"product": 15778},
             {"product": 50776},
         ]
     }
@@ -49,7 +56,23 @@ def test_add_product_to_cart():
 
 
 # TEST SUBSTRACT PRODUCT OF THE CART
-# def test_
+def test_delete_product_of_cart():
+    db["1"] = {
+        "id": "1",
+        "lines": [
+            {"product": 50776}
+        ]
+    }
+    body = {"product": 50776}
+    
+    response = client.delete("/cart/1/product", json=body)
+
+    assert response.status_code == 200
+    assert response.json() == {
+        "id": "1",
+        "lines": []
+    }
+
 
 # BEFORE MOVING ON...
 # HAVE YOU SET THE TEST TO GREEN??
