@@ -26,12 +26,18 @@ def test_return_cart():
     }
 
 # TEST ADD PRODUCT TO THE CART
-# def test_
-
-
-# BEFORE MOVING ON...
-# HAVE YOU SET THE TEST TO GREEN??
-# HAVE YOU DID A REFACTOR?
+def test_add_product_to_cart():
+    body = {"product": 50776}
+    
+    response = client.post("/cart/1/product", json=body)
+    
+    assert response.status_code == 200
+    assert response.json() == {
+        "id": "1",
+        "lines": [
+            {"product": 50776},
+        ]
+    }
 
 
 # TEST SUM QUANTITY TO A PRODUCT OF THE CART
