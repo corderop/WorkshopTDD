@@ -88,7 +88,26 @@ def test_delete_product_of_cart():
 
 
 # TEST CANT REST MORE QUANTITY THAN EXISTS OF A PRODUCT OF THE CART
-# def test_
+def test_can_not_rest_more_than_5():
+    db["1"] = {
+        "id": "1",
+        "lines": [
+            {"product": 50776},
+            {"product": 50776},
+            {"product": 50776},
+            {"product": 50776},
+            {"product": 50776},
+            {"product": 50776},
+        ]
+    }
+    body = {"product": 50776, "quantity": 6}
+    
+    response = client.delete("/cart/1/product", json=body)
+
+    assert response.status_code == 400
+    assert response.json() == {
+        "error": "Nooooo primo nooo",
+    }
 
 # BEFORE MOVING ON...
 # HAVE YOU SET THE TEST TO GREEN??

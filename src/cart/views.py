@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi import Body
+from fastapi.responses import JSONResponse
 
 app = FastAPI()
 db = {}
@@ -17,5 +18,10 @@ def create_cart(cart_id: str, body: dict = Body(...)):
 
 @app.delete("/cart/{cart_id}/product")
 def delete_cart(cart_id: str, body: dict = Body(...)):
+    LIMIT = 5
+    
+    if "quantity" in body and body["quantity"] > LIMIT:
+        return JSONResponse(status_code=400, content={"error": "Nooooo primo nooo"})
+    
     db[cart_id]["lines"].remove(body)
     return db[cart_id]
